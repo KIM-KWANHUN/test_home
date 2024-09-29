@@ -1,308 +1,162 @@
-select
-*
-from
-tb_class,
-tb_class_professor,
-tb_department,
-tb_grade,
-tb_professor,
-tb_student;
+-- root 계정에서 실행
+-- employee 계정 생성
+create database employee;
+-- 권한 부여
+grant all privileges on employee.* to ohgiraffers@'%';
+-- 권한 부여 확인
+show grants for ohgiraffers@'%';
 
--- 1. 춘 기술대학교의 학과 이름과 계열을 표시하시오. 단, 출력 헤더는 "학과 명", "계열"으로 표시하도록 한다.
-select
-DEPARTMENT_NAME as 학과명,
-CATEGORY as 계열
-from
-tb_department;
 
--- 2. 학과의 학과 정원을 다음과 같은 형태로 화면에 출력한다.
-select
-DEPARTMENT_NAME,
-CAPACITY
-from
-tb_department;
+-- ohgiraffers 계정에서
+-- 처음 실행할 때 Use employee; 해야 employee 테이블 사용가능
+USE employee;
+--
 
--- 3. "국어국문학과" 에 다니는 여학생 중 현재 휴학중인 여학생을 찾아달라는 요청이
--- 들어왔다. 누구인가? (국문학과의 '학과코드'는 학과 테이블(TB_DEPARTMENT)을 조회해서
--- 찾아 내도록 하자)
+-- employee 테이블
 
-select
-d.DEPARTMENT_NAME,
-s.STUDENT_NAME,
-s.STUDENT_SSN,
-s.ABSENCE_YN
 
-from
-tb_department d
-join
-tb_student s
-on
-(d.DEPARTMENT_NO = s.DEPARTMENT_NO)
-where
-STUDENT_SSN like '_______2______' and ABSENCE_YN like 'Y';
 
--- 4. 도서관에서 대출 도서 장기 연체자 들을 찾아 이름을 게시하고자 한다. 그 대상자들의
--- 학번이 다음과 같을 때 대상자들을 찾는 적 SQL 구문을 작성하시오.
--- A513079, A513090, A513091, A513110, A513119
-select
-STUDENT_NO,
-STUDENT_NAME
-from
-tb_student
-where
-STUDENT_NO IN('A513079', 'A513079', 'A513090', 'A513091', 'A513110', 'A513119');
+#DROP TABLE `EMPLOYEE`;
+#DROP TABLE `DEPARTMENT`;
+#DROP TABLE `JOB`;
+#DROP TABLE `LOCATION`;
+#DROP TABLE `NATION`;
+#DROP TABLE `SAL_GRADE`;
 
--- 5. 입학정원이 20 명 이상 30 명 이하인 학과들의 학과 이름과 계열을 출력하시오.
-select
-DEPARTMENT_NAME,
-CATEGORY,
-CAPACITY
-from
-tb_department
-where
-CAPACITY >= 20 AND CAPACITY <= 30;
 
--- 6. 춘기술대학교는총장을제외하고모든교수들이소속학과를가지고있다. 
--- 그럼 춘기술대학교 총장의 이름을 알아낼 수 있는 SQL 문장을 작성하시오.
-select
-PROFESSOR_NAME,
-DEPARTMENT_NO
-from
-tb_professor
-where
-DEPARTMENT_NO is null;
-
--- 7. 혹시 전산상의 착오로 학과가 지정되어 있지 않은 학생이 있는지 확인하고자 한다.
--- 어떠한 SQL 문장을 사용하면 될 것인지 작성하시오.
-select
-DEPARTMENT_NO,
-STUDENT_NAME
-from
-tb_student
-where
-DEPARTMENT_NO is not null;
-
--- 8. 수강신청을 하려고 한다. 선수과목 여부를 확인해야 하는데, 선수과목이 존재하는
--- 과목들은 어떤 과목인지 과목번호를 조회해보시오.
-select
-PREATTENDING_CLASS_NO,
-CLASS_NAME
-from
-tb_class
-where
-PREATTENDING_CLASS_NO is not null;
-
--- 9. 춘 대학에는 어떤 계열(CATEGORY)들이 있는지 조회해보시오.
-select distinct
-CATEGORY
-from
-tb_department;
-
--- 10. 19학번 전주 거주자들의 모임을 만들려고 한다. 휴학한 사람들은 제외하고, 재학중인
--- 학생들의 학번, 이름, 주민번호를 출력하는 구문을 작성하시오.
-select
-STUDENT_NO,
-STUDENT_NAME,
-STUDENT_SSN,
-ENTRANCE_DATE
-ABSENCE_YN
-from
-tb_student
-where
-ENTRANCE_DATE like '%9%' or ABSENCE_YN is null;
-
--- 1.영어영문학과(학과코드 002) 학생들의 학번과 이름, 입학 년도를 입학 년도가 빠른순으로 표시하는 SQL 문장을 작성하시오.
-select
-d.DEPARTMENT_NO as 학번, 
-s.STUDENT_NO,
-s.STUDENT_NAME,
-s.ENTRANCE_DATE
-from
-tb_department d
-join
-tb_student s
-on 
-(d.DEPARTMENT_NO = s.DEPARTMENT_NO)
-order by ENTRANCE_DATE;
--- 2.춘 기술대학교의 교수 중 이름이 세 글자가 아닌 교수가 두 명 있다고 한다. 
--- 그 교수의 이름과 주민번호를 화면에 출력하는 SQL 문장을 작성해 보자.
-select
-PROFESSOR_NAME as 이름,
-PROFESSOR_SSN as 주민번호
-from
-tb_professor
-where
-PROFESSOR_NAME not like '___';
--- 3.춘 기술대학교의 남자 교수들의 이름과 나이를 출력하는 SQL 문장을 작성하시오. 단 이때 나이가 적은 사람에서 많은 사람 순서로 화면에 출력되도록 만드시오. 
--- (단, 교수 중 2000 년 이후 출생자는 없으며 출력 헤더는 "교수이름", "나이"로 한다. 나이는 ‘만’으로 계산한다.)
--- 힌트 : floor, datediff, curdate, str_to_date, concat
--- 주민번호에서 년도 추출, 19앞에 붙여서 ex) 1993 만들기
--- 이후 현재 년도와 1993 간의 날짜 차이 구해서 365로 나누기
-select
-PROFESSOR_NAME as 교수이름,
-FLOOR(DATEDIFF(CURDATE(), STR_TO_DATE(CONCAT('19', 
-SUBSTRING(PROFESSOR_SSN, 1, 6)), '%Y%m%d')) / 365) as 나이
-from
-tb_professor
-where
-SUBSTRING(PROFESSOR_SSN, 8, 1) = 1
-order by
-PROFESSOR_SSN desc;
--- floor 정수로 반환
--- DATEDIFF
-
--- 4.교수들의 이름 중 성을 제외한 이름만 출력하는 SQL 문장을 작성하시오.
--- 출력 헤더는’이름’ 이 찍히도록 핚다. (성이 2 자인 경우는 교수는 없다고 가정하시오)
-
-select
-SUBSTRING(PROFESSOR_NAME, 2) as 이름
-from
-tb_professor;
-
--- 5.춘 기술대학교의 재수생 입학자를 구하려고 한다. 어떻게 찾아낼 것인가?
--- 이때, 만 19살이 되는 해에 입학하면 재수를 하지 않은 것으로 간주한다.
--- FLOOR(DATEDIFF(CURDATE(), STR_TO_DATE(CONCAT('19', 
--- SUBSTRING(PROFESSOR_SSN, 1, 6)), '%Y%m%d')) / 365) as 나이
-select
-STUDENT_NO,
-STUDENT_NAME
-from
-tb_student
-where
-FLOOR(DATEDIFF(CURDATE(), STR_TO_DATE(CONCAT('19', substring(STUDENT_SSN,1,6)), '%Y%m%d');
-
--- 6.2020년 크리스마스는 무슨 요일이었는가?
-SELECT
- DAYNAME('2020-12-25') as 요일 ;
+CREATE TABLE `DEPARTMENT`
+(
+    `DEPT_ID`    CHAR(2)  NOT NULL COMMENT '부서코드',
+    `DEPT_TITLE`    VARCHAR(35) NOT NULL COMMENT '부서명',
+    `LOCATION_ID`    CHAR(2) NOT NULL COMMENT '지역코드',
+ PRIMARY KEY ( `DEPT_ID` )
+)
+ COMMENT = '부서';
  
- -- 7.STR_TO_DATE('99/10/11', '%y/%m/%d') STR_TO_DATE('49/10/11', '%y/%m/%d')은 각각 몇 년 몇 월 몇 일을 의미할까? 
- select
- STR_TO_DATE('99/10/11', '%y/%m/%d') a,
- STR_TO_DATE('49/10/11', '%y/%m/%d') b,
- STR_TO_DATE('70/10/11', '%y/%m/%d') c,
- STR_TO_DATE('69/10/11', '%y/%m/%d') d;
+INSERT INTO DEPARTMENT (DEPT_ID,DEPT_TITLE,LOCATION_ID) VALUES 
+('D1','인사관리부','L1'),
+('D2','회계관리부','L1'),
+('D3','마케팅부','L1'),
+('D4','국내영업부','L1'),
+('D5','해외영업1부','L2'),
+('D6','해외영업2부','L3'),
+('D7','해외영업3부','L4'),
+('D8','기술지원부','L5'),
+('D9','총무부','L1');
  
--- 8.학번이 A517178 인 한아름 학생의 학점 총 평점을 구하는 SQL 문을 작성하시오. 
--- 단, 이때 출력 화면의 헤더는 "평점" 이라고 찍히게 하고, 점수는 반올림하여 소수점 이하 한자리까지만 표시한다.
--- ROUND: 반올림값 반환
-select
-s.STUDENT_NO as 번호,
-s.STUDENT_NAME as 이름,
-round(avg(point),1) as 평점
-from
-tb_grade g
-join
-tb_student s
-on
-(s.STUDENT_NO = g.STUDENT_NO)
-where
-s.STUDENT_NO = 'A517178' AND s.STUDENT_NAME = '한아름';
 
--- 9.학과별 학생수를 구하여 "학과번호", "학생수(명)" 의 형태로 헤더를 만들어 결과값이 출력되도록 하시오.
--- count() 함수 : 특정 열 또는 행의 수를 반환하는 데 사용
--- 주로 특정 조건을 충족하는 행의 수를 세는 데 사용한다.
-select
-d.DEPARTMENT_NO AS 학과번호,
-count(*) AS 학생수
-from
-tb_department d
-join
-tb_student s
-on
-d.DEPARTMENT_NO = s.DEPARTMENT_NO
-group by
-s.DEPARTMENT_NO;
-
--- 10.지도 교수를 배정받지 못한 학생의 수는 몇 명 정도 되는 알아내는 SQL 문을 작성하시오.
-select
-COACH_PROFESSOR_NO,
-count(*)
-from
-tb_student
-group by
-COACH_PROFESSOR_NO
-having
-COACH_PROFESSOR_NO is null;
-
--- 11.학번이 A112113 인 김고운 학생의 년도 별 평점을 구하는 SQL 문을 작성하시오. 
--- 단, 이때 출력 화면의 헤더는 "년도", "년도 별 평점" 이라고 찍히게 하고, 점수는 반올림하여 소수점 이하 한자리까지만 표시한다.
-select
-substring(TERM_NO,1,4) as 년도,
-round(AVG(POINT),1)  as 년도별평점
-from
-tb_grade
-where
-STUDENT_NO = 'A112113'
-group by
-substring(TERM_NO,1,4);
-
--- 12.학과 별 휴학생 수를 파악하고자 한다. 학과 번호와 휴학생 수를 표시하는 SQL 문장을 작성하시오.
-select
-DEPARTMENT_NO as '학과번호',
-count(case when ABSENCE_YN = 'Y' THEN 1
-else null end) as '휴학생의 수'
-from
-tb_student
-group by
-DEPARTMENT_NO;
-
--- 13. 춘 대학교에 다니는 동명이인(同名異人) 학생들의 이름을 찾고자 한다.
--- 어떤 SQL 문장을 사용하면 가능하겠는가?
-select
-STUDENT_NAME as 이름,
-count(*) as '동명이인 수'
-from
-tb_student
-group by
-STUDENT_NAME
-having
-count(STUDENT_NAME) > 1;
-
--- 14. 학번이 A112113 인 김고운 학생의 년도, 학기 별 평점과 년도 별 누적 평점 , 총평점을 구하는 SQL 문을 작성하시오. (단, 평점은 소수점 1 자리까지만 반올림하여 표시한다.
-select
-substring(TERM_NO,1,4) AS 년도,
-substring(TERM_NO,5,2) AS 학기,
-round(AVG(POINT),1) AS 학기별평점
-from
-tb_grade
-where
-STUDENT_NO = 'A112113'
-group by
-substring(TERM_NO,1,4),
-substring(TERM_NO,5,2)
-with ROLLUP;
-
--- 1.학생이름과 주소지를 표시하시오. 단, 출력 헤더는 "학생 이름", "주소지"로 하고, 정렬은 이름으로 오름차순 표시하도록 한다.
-select
-STUDENT_NAME AS 학생이름,
-STUDENT_ADDRESS AS 주소지
-FROM
-tb_student
-where
-STUDENT_ADDRESS is not null
-order by
-STUDENT_NAME asc;
-
--- 2.휴학중인 학생들의 이름과 주민번호를 나이가 적은 순서로 화면에 출력하시오.
-select
-STUDENT_NAME,
-STUDENT_SSN
-FROM
-tb_student
-where
-ABSENCE_YN = 'Y'
-order by
-STUDENT_SSN desc;
-
-use chundb;
-select * from TB_DEPARTMENT; --  학과테이블
-select * from TB_STUDENT; -- 학생테이블
-select * from TB_PROFESSOR; -- 교수테이블
-select * from TB_CLASS; -- 수업테이블
-select * from TB_CLASS_PROFESSOR; -- 수업교수테이블
-select * from TB_GRADE; -- 학점테이블
+CREATE TABLE `EMPLOYEE`
+(
+    `EMP_ID`    VARCHAR(3)  NOT NULL COMMENT '사원번호',
+    `EMP_NAME`    VARCHAR(20) NOT NULL COMMENT '직원명',
+    `EMP_NO`    CHAR(14) NOT NULL COMMENT '주민등록번호',
+    `EMAIL`    VARCHAR(35) COMMENT '이메일',
+    `PHONE`    VARCHAR(12) COMMENT '전화번호',
+    `DEPT_CODE`    CHAR(2) COMMENT '부서코드',
+    `JOB_CODE`    CHAR(2) NOT NULL COMMENT '직급코드',
+    `SAL_LEVEL`    CHAR(2) NOT NULL COMMENT '급여등급',
+    `SALARY`    DECIMAL COMMENT '급여',
+    `BONUS`    float COMMENT '보너스율',
+    `MANAGER_ID`    VARCHAR(3) COMMENT '관리자사번',
+    `HIRE_DATE`    DATE COMMENT '입사일',
+    `ENT_DATE`    DATE COMMENT '퇴사일',
+    `ENT_YN`    CHAR(1) DEFAULT 'N' COMMENT '퇴직여부',
+ PRIMARY KEY ( `EMP_ID` )
+)
+ COMMENT = '사원';
+ 
+INSERT INTO EMPLOYEE (EMP_ID,EMP_NAME,EMP_NO,EMAIL,PHONE,DEPT_CODE,JOB_CODE,SAL_LEVEL,SALARY,BONUS,MANAGER_ID,HIRE_DATE,ENT_DATE,ENT_YN) VALUES 
+('200','선동일','621235-1985634','sun_di@greedy.com','01099546325','D9','J1','S1',8000000,0.3,null,STR_TO_DATE('90/02/06','%y/%m/%d'),null,'N'),
+('201','송종기','631156-1548654','song_jk@greedy.com','01045686656','D9','J2','S1',6000000,null,'200',STR_TO_DATE('01/09/01','%y/%m/%d'),null,'N'),
+('202','노옹철','861015-1356452','no_oc@greedy.com','01066656263','D9','J2','S4',3700000,null,'201',STR_TO_DATE('01/01/01','%y/%m/%d'),null,'N'),
+('203','송은희','631010-2653546','song_eh@greedy.com','01077607879','D6','J4','S5',2800000,null,'204',STR_TO_DATE('96/05/03','%y/%m/%d'),null,'N'),
+('204','유재식','660508-1342154','yoo_js@greedy.com','01099999129','D6','J3','S4',3400000,0.2,'200',STR_TO_DATE('00/12/29','%y/%m/%d'),null,'N'),
+('205','정중하','770102-1357951','jung_jh@greedy.com','01036654875','D6','J3','S4',3900000,null,'204',STR_TO_DATE('99/09/09','%y/%m/%d'),null,'N'),
+('206','박나라','630709-2054321','pack_nr@greedy.com','01096935222','D5','J7','S6',1800000,null,'207',STR_TO_DATE('08/04/02','%y/%m/%d'),null,'N'),
+('207','하이유','690402-2040612','ha_iy@greedy.com','01036654488','D5','J5','S5',2200000,0.1,'200',STR_TO_DATE('94/07/07','%y/%m/%d'),null,'N'),
+('208','김해술','870927-1313564','kim_hs@greedy.com','01078634444','D5','J5','S5',2500000,null,'207',STR_TO_DATE('04/04/30','%y/%m/%d'),null,'N'),
+('209','심봉선','750206-1325546','sim_bs@greedy.com','0113654485','D5','J3','S4',3500000,0.15,'207',STR_TO_DATE('11/11/11','%y/%m/%d'),null,'N'),
+('210','윤은해','650505-2356985','youn_eh@greedy.com','0179964233','D5','J7','S5',2000000,null,'207',STR_TO_DATE('01/02/03','%y/%m/%d'),null,'N'),
+('211','전형돈','830807-1121321','jun_hd@greedy.com','01044432222','D8','J6','S5',2000000,null,'200',STR_TO_DATE('12/12/12','%y/%m/%d'),null,'N'),
+('212','장쯔위','780923-2234542','jang_zw@greedy.com','01066682224','D8','J6','S5',2550000,0.25,'211',STR_TO_DATE('15/06/17','%y/%m/%d'),null,'N'),
+('213','하동운','621111-1785463','ha_dh@greedy.com','01158456632',null,'J6','S5',2320000,0.1,null,STR_TO_DATE('99/12/31','%y/%m/%d'),null,'N'),
+('214','방명수','856795-1313513','bang_ms@greedy.com','01074127545','D1','J7','S6',1380000,null,'200',STR_TO_DATE('10/04/04','%y/%m/%d'),null,'N'),
+('215','대북혼','881130-1050911','dae_bh@greedy.com','01088808584','D5','J5','S4',3760000,null,null,STR_TO_DATE('17/06/19','%y/%m/%d'),null,'N'),
+('216','차태연','770808-1364897','cha_ty@greedy.com','01064643212','D1','J6','S5',2780000,0.2,'214',STR_TO_DATE('13/03/01','%y/%m/%d'),null,'N'),
+('217','전지연','770808-2665412','jun_jy@greedy.com','01033624442','D1','J6','S4',3660000,0.3,'214',STR_TO_DATE('07/03/20','%y/%m/%d'),null,'N'),
+('218','이오리','870427-2232123','lee_or@greedy.com','01022306545',null,'J7','S5',2890000,null,null,STR_TO_DATE('16/11/28','%y/%m/%d'),null,'N'),
+('219','임시환','660712-1212123','im_sh@greedy.com',null,'D2','J4','S6',1550000,null,null,STR_TO_DATE('99/09/09','%y/%m/%d'),null,'N'),
+('220','이중석','770823-1113111','lee_js@greedy.com',null,'D2','J4','S5',2490000,null,null,STR_TO_DATE('14/09/18','%y/%m/%d'),null,'N'),
+('221','유하진','800808-1123341','yoo_hj@greedy.com',null,'D2','J4','S5',2480000,null,null,STR_TO_DATE('94/01/20','%y/%m/%d'),null,'N'),
+('222','이태림','760918-2854697','lee_tr@greedy.com','01033000002','D8','J6','S5',2436240,0.35,'100',STR_TO_DATE('97/09/12','%y/%m/%d'),STR_TO_DATE('17/09/12','%y/%m/%d'),'Y');
 
 
+CREATE TABLE `JOB`
+(
+    `JOB_CODE`    CHAR(2)  NOT NULL COMMENT '직급코드',
+    `JOB_NAME`    VARCHAR(35) COMMENT '직급명',
+ PRIMARY KEY ( `JOB_CODE` )
+)
+ COMMENT = '직급';
+ 
+INSERT INTO JOB (JOB_CODE,JOB_NAME) VALUES 
+('J1','대표'),
+('J2','부사장'),
+('J3','부장'),
+('J4','차장'),
+('J5','과장'),
+('J6','대리'),
+('J7','사원');
 
 
+CREATE TABLE `LOCATION`
+(
+    `LOCAL_CODE`    CHAR(2)  NOT NULL COMMENT '지역코드',
+    `NATIONAL_CODE`    CHAR(2) NOT NULL COMMENT '국가코드',
+    `LOCAL_NAME`    VARCHAR(40) COMMENT '지역명',
+ PRIMARY KEY ( `LOCAL_CODE` )
+)
+ COMMENT = '지역';
 
+INSERT INTO LOCATION (LOCAL_CODE,NATIONAL_CODE,LOCAL_NAME) VALUES 
+('L1','KO','ASIA1'),
+('L2','JP','ASIA2'),
+('L3','CH','ASIA3'),
+('L4','US','AMERICA'),
+('L5','RU','EU');
+
+
+CREATE TABLE NATION
+(
+    `NATIONAL_CODE`    CHAR(2)  NOT NULL COMMENT '국가코드',
+    `NATIONAL_NAME`    VARCHAR(35) COMMENT '국가명',
+ PRIMARY KEY ( `NATIONAL_CODE` )
+)
+ COMMENT = '국가';
+ 
+INSERT INTO NATION (NATIONAL_CODE,NATIONAL_NAME) VALUES 
+('KO','한국'),
+('JP','일본'),
+('CH','중국'),
+('US','미국'),
+('RU','러시아');
+
+
+CREATE TABLE SAL_GRADE
+(
+    `SAL_LEVEL`    CHAR(2)  NOT NULL COMMENT '급여등급',
+    `MIN_SAL`    DECIMAL COMMENT '최소급여',
+    `MAX_SAL`    DECIMAL COMMENT '최대급여',
+ PRIMARY KEY ( `SAL_LEVEL` )
+)
+ COMMENT = '급여등급';
+ 
+INSERT INTO SAL_GRADE (SAL_LEVEL,MIN_SAL,MAX_SAL) VALUES 
+('S1',6000000,10000000),
+('S2',5000000,5999999),
+('S3',4000000,4999999),
+('S4',3000000,3999999),
+('S5',2000000,2999999),
+('S6',1000000,1999999);
+
+commit;
