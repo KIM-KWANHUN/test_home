@@ -2,9 +2,36 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="TEST1">
-    SELECT
+        SELECT
         *
         FROM
-        EMPLOYEE;
+        EMPLOYEE
+    </entry>
+    <entry key="TEST2">
+        SELECT
+        EMP_ID,
+        EMP_NAME
+        FROM
+        EMPLOYEE
+    </entry>
+    <entry key="TEST3">
+        SELECT
+        EMP_NAME,
+        DEPT_CODE
+        FROM
+        EMPLOYEE
+        WHERE
+        DEPT_CODE = 'D9'
+    </entry>
+    <entry key="TEST4">
+        SELECT
+        EMP_ID,
+        EMP_NAME,
+        DEPT_CODE,
+        SALARY
+        FROM
+        EMPLOYEE
+        WHERE
+        SALARY > 3000000
     </entry>
 </properties>

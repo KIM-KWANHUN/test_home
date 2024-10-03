@@ -3,7 +3,7 @@ package com.ohgiraffers.section01.employeeDTO;
 import java.util.Date;
 
 public class employeeDTO {
-    private int EMP_ID; //사원번호
+    private String EMP_ID; //사원번호
     private String EMP_NAME; //직원명
     private String EMP_NO; //주민등록번호
     private String EMAIL; //이메일
@@ -20,7 +20,7 @@ public class employeeDTO {
 
     public employeeDTO() {}
 
-    public employeeDTO(int EMP_ID, String EMP_NAME, String EMP_NO, String EMAIL, String PHONE, String DEPT_CODE, String JOB_CODE, String SAL_LEVEL, int SALARY, double BONUS, String MANAGER_ID, Date HIRE_DATE, Date ENT_DATE, Boolean ENT_YN) {
+    public employeeDTO(String EMP_ID, String EMP_NAME, String EMP_NO, String EMAIL, String PHONE, String DEPT_CODE, String JOB_CODE, String SAL_LEVEL, int SALARY, double BONUS, String MANAGER_ID, Date HIRE_DATE, Date ENT_DATE, Boolean ENT_YN) {
         this.EMP_ID = EMP_ID;
         this.EMP_NAME = EMP_NAME;
         this.EMP_NO = EMP_NO;
@@ -37,11 +37,11 @@ public class employeeDTO {
         this.ENT_YN = ENT_YN;
     }
 
-    public int getEMP_ID() {
+    public String getEMP_ID() {
         return EMP_ID;
     }
 
-    public void setEMP_ID(int EMP_ID) {
+    public void setEMP_ID(String EMP_ID) {
         this.EMP_ID = EMP_ID;
     }
 
