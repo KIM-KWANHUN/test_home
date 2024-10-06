@@ -2,10 +2,7 @@ package com.ohgiraffers.section01.common;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class Teplete {
@@ -44,6 +41,17 @@ public class Teplete {
         try {
             if(stmt != null & !stmt.isClosed()){
                 stmt.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void close(ResultSet rset) {
+        try {
+            if(rset != null & !rset.isClosed()){
+                rset.close();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

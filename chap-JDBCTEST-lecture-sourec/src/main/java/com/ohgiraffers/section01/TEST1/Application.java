@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static com.ohgiraffers.section01.common.JDBCTemplate.close;
-import static com.ohgiraffers.section01.common.JDBCTemplate.getConnection;
+import static com.ohgiraffers.section01.common.Teplete.close;
 import static com.ohgiraffers.section01.common.Teplete.getConnection;
 
 public class Application {
@@ -44,9 +43,9 @@ public class Application {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            close(con);
-            close(pstmt);
-            close(rset);
+           close(con);
+           close(rset);
+           close(pstmt);
         }
 
     }
