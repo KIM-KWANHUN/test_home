@@ -34,4 +34,15 @@
         WHERE
         SALARY > 3000000
     </entry>
+    <entry key="TEST4">
+        SELECT
+        EMP_ID,
+        EMP_NAME,
+        SALARY,
+        BONUS
+        FROM
+        EMPLOYEE
+        WHERE
+        BONUS IS NULL
+    </entry>
 </properties>

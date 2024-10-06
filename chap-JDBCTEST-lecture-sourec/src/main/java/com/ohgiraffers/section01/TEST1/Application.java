@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import static com.ohgiraffers.section01.common.JDBCTemplate.close;
 import static com.ohgiraffers.section01.common.JDBCTemplate.getConnection;
+import static com.ohgiraffers.section01.common.Teplete.getConnection;
 
 public class Application {
 
@@ -34,7 +35,7 @@ public class Application {
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
-                System.out.println(rset.getString("EMP_ID")+" "+rset.getString("EMP_NAME")+" "+rset.getString("DEPT_CODE")+" "+rset.getString("SALARY"));
+                System.out.println(rset.getString("EMP_ID")+" "+rset.getString("EMP_NAME")+" "+rset.getString("SALARY")+" "+rset.getString("BONUS"));
 
             }
 
