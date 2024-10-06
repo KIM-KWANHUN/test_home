@@ -28,4 +28,15 @@ public class Teplete {
         }
         return con;
     }
+
+    public static void close(Connection con) {
+        try {
+            if(con != null & !con.isClosed()){
+                con.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
