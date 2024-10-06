@@ -45,4 +45,26 @@
         WHERE
         BONUS IS NULL
     </entry>
+    <entry key="TEST5">
+        SELECT
+        EMP_ID,
+        EMP_NAME,
+        SALARY,
+        DEPT_CODE,
+        JOB_CODE
+        FROM
+        EMPLOYEE
+        WHERE
+        SALARY >= 3500000 AND SALARY &lt;= 5500000
+    </entry>
+    <entry key="TEST6">
+        SELECT
+        EMP_ID,
+        EMP_NAME,
+        HIRE_DATE
+        FROM
+        EMPLOYEE
+        WHERE
+        EMP_NAME LIKE '김%'
+    </entry>
 </properties>

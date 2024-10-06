@@ -12,7 +12,7 @@ public class Teplete {
         Properties prop = new Properties();
 
         try {
-            prop.load(new FileReader("src/main/java/com/ohgiraffers/config/connection.properties"));
+            prop.load(new FileReader("src/main/java/com/ohgiraffers/section01/config/connection.properties"));
             String driver = prop.getProperty("driver");
             String url = prop.getProperty("url");
             Class.forName(driver);

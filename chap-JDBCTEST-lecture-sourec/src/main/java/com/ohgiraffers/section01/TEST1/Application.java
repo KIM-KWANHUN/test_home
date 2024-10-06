@@ -27,15 +27,16 @@ public class Application {
         try {
             prop.loadFromXML(new FileInputStream("src/main/java/com/ohgiraffers/section01/mapper/menu-query.xml"));
 
-            String query = prop.getProperty("TEST4");
+            String query = prop.getProperty("TEST6");
 
             pstmt = con.prepareStatement(query);
 
             rset = pstmt.executeQuery();
 
             while (rset.next()) {
-                System.out.println(rset.getString("EMP_ID")+" "+rset.getString("EMP_NAME")+" "+rset.getString("SALARY")+" "+rset.getString("BONUS"));
-
+                System.out.println(rset.getString("EMP_ID")+
+                        " "+rset.getString("EMP_NAME")+
+                        " "+rset.getDate("HIRE_DATE"));
             }
 
         } catch (IOException e) {
