@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("menu/list")
+@RequestMapping("/menu/*")
 public class MenuController {
 
     private MenuService menuService;
@@ -25,6 +25,8 @@ public class MenuController {
 
         List<MenuDTO> menu = menuService.menuAll();
 
-        return "";
+        model.addAttribute("menu",menu);
+
+        return "/menu/list";
     }
 }

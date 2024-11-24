@@ -6,6 +6,7 @@ import org.ohgiraffers.menu.Model.DTO.MenuDTO;
 import java.util.List;
 
 @Mapper
-public interface MenuMapper {
+public interface menuMapper {
+
     List<MenuDTO> menuAll();
 }

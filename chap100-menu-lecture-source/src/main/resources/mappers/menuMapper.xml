@@ -2,7 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.ohgiraffers.menu.Model.DAO.MenuMapper">
+
+<mapper namespace="org.ohgiraffers.menu.Model.DAO.menuMapper">
     <resultMap id="menuResult" type="org.ohgiraffers.menu.Model.DTO.MenuDTO">
         <id property="code" column="menu_code"/>
         <result property="name" column="menu_name"/>
@@ -16,7 +17,7 @@
         FROM
             tbl_menu
         WHERE
-            orderable_status = Y
+            orderable_status = 'Y'
         ORDER BY
             menu_code
     </select>
