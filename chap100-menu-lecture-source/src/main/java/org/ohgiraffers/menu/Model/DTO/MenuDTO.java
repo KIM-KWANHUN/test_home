@@ -1,4 +1,4 @@
-package org.ohgiraffers.menu.Model;
+package org.ohgiraffers.menu.Model.DTO;
 
 public class MenuDTO {
     private int code;
